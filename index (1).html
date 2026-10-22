@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cumpleaños Paula ✨ VIP Experience</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 50% 18%, #1f0b2e 0%, #0d0718 50%, #05020a 100%);
+    }
+    .font-luxury {
+      font-family: 'Cinzel', serif;
+    }
+    .font-quote {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFF1CE 0%, #F6C065 45%, #DF8A1E 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-panel {
+      background: rgba(22, 13, 36, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(244, 114, 182, 0.22);
+      box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(168, 85, 247, 0.28);
+    }
+    /* Puntero Superior Geométrico y Alineado */
+    .indicator-arrow {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 36px solid #F59E0B;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.85));
+    }
+    /* Centrado Absoluto Perfecto sin desfases de translate */
+    .center-perfect {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes pulse-soft {
+      0%, 100% {
+        box-shadow: 0 0 25px rgba(245, 158, 11, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(244, 63, 94, 0.75), inset 0 2px 8px rgba(255, 255, 255, 0.7);
+      }
+    }
+    .glow-interactive {
+      animation: pulse-soft 2.8s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 relative overflow-x-hidden selection:bg-rose-500 selection:text-white">
+
+  <!-- Luces decorativas ambientales profundas -->
+  <div class="fixed top-[-15%] left-[-15%] w-[480px] h-[480px] bg-purple-600/18 rounded-full blur-[150px] pointer-events-none"></div>
+  <div class="fixed bottom-[-15%] right-[-15%] w-[480px] h-[480px] bg-rose-600/18 rounded-full blur-[150px] pointer-events-none"></div>
+
+  <!-- Encabezado con Mensajito de Cumple Chévere -->
+  <header class="text-center mt-2 mb-3 z-10 max-w-md w-full">
+    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-purple-500/15 border border-amber-500/35 text-amber-300 text-xs font-bold tracking-widest uppercase mb-2.5 backdrop-blur-md shadow-lg">
+      <span class="text-rose-400">✨</span>
+      <span>Birthday Pass • 24 de Octubre</span>
+      <span class="text-rose-400">✨</span>
+    </div>
+    
+    <h1 class="font-luxury text-3xl sm:text-5xl font-extrabold tracking-tight gold-gradient-text drop-shadow-md">
+      ¡FELIZ CUMPLE, PAU! 🎂
+    </h1>
+    
+    <p class="text-slate-300 text-xs sm:text-sm mt-2 font-medium leading-relaxed max-w-xs sm:max-w-sm mx-auto">
+      Que esta nueva vuelta al sol te traiga sonrisas, momentos increíbles y proyectos cumplidos. Gira la ruleta y reclama tu regalo oficial. ¡Solo tienes 1 tiro! 🎁
+    </p>
+  </header>
+
+  <!-- Contenedor Principal de la Ruleta (Centrado Milimétrico) -->
+  <main class="relative flex flex-col items-center justify-center my-auto z-10 w-full max-w-[420px]">
+    
+    <!-- Puntero Superior HD -->
+    <div class="absolute -top-5 z-30 flex flex-col items-center pointer-events-none">
+      <div class="indicator-arrow"></div>
+      <div class="w-3.5 h-3.5 rounded-full bg-amber-100 -mt-1.5 shadow-md border border-amber-500"></div>
+    </div>
+
+    <!-- Aro Exterior de Lujo -->
+    <div class="relative p-3 rounded-full glass-panel border border-amber-500/30 flex items-center justify-center">
+      
+      <!-- Canvas de la Ruleta (HiDPI 4K) -->
+      <canvas id="wheelCanvas" width="760" height="760" class="w-[340px] h-[340px] sm:w-[380px] sm:h-[380px] rounded-full block"></canvas>
+
+      <!-- Botón Central con Centrado de Precisión Absoluta -->
+      <button id="spinBtn" class="center-perfect z-20 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-amber-600 via-rose-600 to-amber-300 text-slate-950 font-black border-4 border-[#0d0718] flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform duration-200 glow-interactive select-none">
+        <span class="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] font-luxury tracking-widest font-black text-sm sm:text-base leading-none">GIRAR</span>
+        <span class="text-[9px] uppercase tracking-wider text-amber-200/95 font-bold mt-1 leading-none">TOCA AQUÍ</span>
+      </button>
+    </div>
+
+    <!-- Badge de estado -->
+    <div id="statusBadge" class="mt-5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-slate-300 text-xs font-semibold flex items-center gap-2 shadow-inner">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+      <span>1 Tiro exclusivo disponible</span>
+    </div>
+  </main>
+
+  <!-- Footer con Frase Motivacional Estilo Femenino / Fluidez -->
+  <footer class="mt-5 mb-2 text-center z-10 max-w-sm px-4">
+    <p class="font-quote text-base sm:text-lg text-rose-200/90 italic tracking-wide leading-relaxed drop-shadow">
+      “Que la vida te siga sonriendo bonito, que tus sueños vuelen alto y que nunca te falten motivos para celebrar.” ✨
+    </p>
+    <div class="w-12 h-[1px] bg-gradient-to-r from-transparent via-rose-400/50 to-transparent mx-auto mt-2"></div>
+  </footer>
+
+  <!-- Modal con resultado ganador VIP -->
+  <div id="prizeModal" class="fixed inset-0 bg-black/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-400">
+    <div id="modalBox" class="glass-panel rounded-3xl p-6 sm:p-7 text-center max-w-sm w-full shadow-2xl border border-amber-500/35 transform scale-90 transition-all duration-400">
+      
+      <!-- Icono en círculo neón -->
+      <div class="w-20 h-20 mx-auto mb-3 rounded-3xl bg-gradient-to-tr from-amber-500/20 via-rose-500/20 to-purple-500/20 border border-amber-500/40 flex items-center justify-center text-4xl shadow-2xl animate-bounce" id="prizeEmoji">
+        🍝
+      </div>
+
+      <div class="inline-block px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] font-bold tracking-widest uppercase mb-1.5">
+        ¡Premio Desbloqueado!
+      </div>
+      
+      <h3 class="font-luxury text-xl sm:text-2xl font-extrabold text-white mb-2 gold-gradient-text" id="prizeName">
+        Comida Italiana & Vino
+      </h3>
+      
+      <p class="text-slate-300 text-xs sm:text-sm mb-4 leading-relaxed" id="prizeDesc">
+        Pasta deli y copa de vino para celebrar tu cumple por todo lo alto.
+      </p>
+
+      <!-- Campo interactivo exclusivo para Deseo Libre VIP -->
+      <div id="customWishContainer" class="hidden mb-4 text-left">
+        <label class="block text-[11px] uppercase tracking-wider text-amber-300 font-bold mb-1.5">
+          ¿Qué plan o antojo quieres pedir? ✨
+        </label>
+        <input 
+          type="text" 
+          id="customWishInput" 
+          placeholder="Ej: Salir de rumba, cine VIP, tarde de cócteles..." 
+          class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-amber-500/40 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+        />
+        <p class="text-[10px] text-slate-400 mt-1 italic">
+          Escribe lo que quieras y se agregará automático al mensaje.
+        </p>
+      </div>
+
+      <!-- Botón WhatsApp Oficial -->
+      <a id="claimBtn" href="#" target="_blank" class="w-full py-3.5 px-5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black rounded-2xl flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/25 active:scale-95 transition-all text-sm tracking-wide">
+        <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+        <span id="claimBtnText">Reclamar a Erick por WhatsApp</span>
+      </a>
+
+      <button id="closeModalBtn" class="mt-3.5 text-xs text-slate-400 hover:text-white transition-colors underline decoration-slate-600">
+        Volver a ver la ruleta
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const NUMERO_WHATSAPP = "573112358236";
+
+    const canvas = document.getElementById('wheelCanvas');
+    const ctx = canvas.getContext('2d');
+    const spinBtn = document.getElementById('spinBtn');
+    const prizeModal = document.getElementById('prizeModal');
+    const modalBox = document.getElementById('modalBox');
+    const prizeEmoji = document.getElementById('prizeEmoji');
+    const prizeName = document.getElementById('prizeName');
+    const prizeDesc = document.getElementById('prizeDesc');
+    const claimBtn = document.getElementById('claimBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const statusBadge = document.getElementById('statusBadge');
+    const customWishContainer = document.getElementById('customWishContainer');
+    const customWishInput = document.getElementById('customWishInput');
+
+    // PALETA EDITORIAL DE ALTA GAMA (Ciruela, Magenta Profundo, Zafiro, Esmeralda, Ámbar & Amatista)
+    const prizes = [
+      { 
+        text: "Comida Italiana & Vino", 
+        emoji: "🍝", 
+        color: "#C026D3", 
+        subColor: "#701A75",
+        desc: "Pasta deli y copa de vino para celebrar tu cumple por todo lo alto.",
+        isCustom: false
+      },
+      { 
+        text: "Helado & Café", 
+        emoji: "🍦", 
+        color: "#8B5CF6", 
+        subColor: "#4C1D95",
+        desc: "Tarde parchada con tu café predilecto y helado doble.",
+        isCustom: false
+      },
+      { 
+        text: "Parque del Café", 
+        emoji: "🎢", 
+        color: "#0284C7", 
+        subColor: "#0369A1",
+        desc: "Día completo de atracciones, montañas rusas y mucha diversión.",
+        isCustom: false
+      },
+      { 
+        text: "Brunch & Postre", 
+        emoji: "🥞", 
+        color: "#059669", 
+        subColor: "#064E3B",
+        desc: "Brunch delicioso en un spot top con postre especial de cumple.",
+        isCustom: false
+      },
+      { 
+        text: "Torta & Hershey's C&C", 
+        emoji: "🍫", 
+        color: "#D97706", 
+        subColor: "#78350F",
+        desc: "Torta de cumple + barra grande de Hershey's Cookies & Cream.",
+        isCustom: false
+      },
+      { 
+        text: "Deseo Libre VIP", 
+        emoji: "🎟️", 
+        color: "#F43F5E", 
+        subColor: "#881337",
+        desc: "¡Tienes el control total! Elige cualquier plan o antojo que se te ocurra.",
+        isCustom: true
+      }
+    ];
+
+    const numSegments = prizes.length;
+    const arcSize = (2 * Math.PI) / numSegments;
+    let currentAngle = 0;
+    let isSpinning = false;
+    let currentWinner = null;
+
+    // Retina Display (HiDPI)
+    const dpr = window.devicePixelRatio || 2;
+    const displaySize = 380;
+    canvas.width = displaySize * dpr;
+    canvas.height = displaySize * dpr;
+    ctx.scale(dpr, dpr);
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) audioCtx = new AudioContext();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playTick() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.035);
+      } catch(e) {}
+    }
+
+    function playWinSound() {
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+          gain.gain.setValueAtTime(0.12, now + idx * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.09 + 0.5);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.09);
+          osc.stop(now + idx * 0.09 + 0.5);
+        });
+      } catch(e) {}
+    }
+
+    function drawWheel() {
+      const centerX = displaySize / 2;
+      const centerY = displaySize / 2;
+      const radius = displaySize / 2 - 8;
+
+      ctx.clearRect(0, 0, displaySize, displaySize);
+
+      for (let i = 0; i < numSegments; i++) {
+        const angle = currentAngle + i * arcSize;
+        
+        // Gradiente radial sofisticado
+        const grad = ctx.createRadialGradient(centerX, centerY, 35, centerX, centerY, radius);
+        grad.addColorStop(0, prizes[i].color);
+        grad.addColorStop(1, prizes[i].subColor);
+
+        ctx.beginPath();
+        ctx.fillStyle = grad;
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, angle, angle + arcSize);
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+
+        // Línea divisoria nítida
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = "#0d0718";
+        ctx.stroke();
+
+        // Texto e ícono
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(angle + arcSize / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "bold 13px 'Plus Jakarta Sans', sans-serif";
+        ctx.shadowColor = "rgba(0,0,0,0.85)";
+        ctx.shadowBlur = 6;
+        ctx.fillText(`${prizes[i].emoji}  ${prizes[i].text}`, radius - 20, 5);
+        ctx.restore();
+      }
+
+      // Anillo perimetral dorado
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "rgba(245, 158, 11, 0.45)";
+      ctx.stroke();
+
+      // Borde cristal interior
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius - 3, 0, 2 * Math.PI);
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+      ctx.stroke();
+    }
+
+    drawWheel();
+
+    function updateWhatsAppUrl() {
+      if (!currentWinner) return;
+
+      let mensaje = "";
+      if (currentWinner.isCustom) {
+        const userWish = customWishInput.value.trim();
+        if (userWish) {
+          mensaje = `¡Hola Erick! 🎂 Giré la ruleta de cumple y gané: 🎟️ *Deseo Libre VIP* ✨\n\nQuiero reclamar: *${userWish}* 🥳`;
+        } else {
+          mensaje = `¡Hola Erick! 🎂 Giré la ruleta de cumple y gané: 🎟️ *Deseo Libre VIP* ✨ ¡Ya te cuento qué plan elijo!`;
+        }
+      } else {
+        mensaje = `¡Hola Erick! 🎂 Giré la ruleta de cumple y me gané: ${currentWinner.emoji} *${currentWinner.text}* ✨`;
+      }
+
+      claimBtn.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+    }
+
+    customWishInput.addEventListener('input', updateWhatsAppUrl);
+
+    function spin() {
+      if (isSpinning) return;
+      initAudio();
+      
+      isSpinning = true;
+      spinBtn.disabled = true;
+      spinBtn.classList.remove('glow-interactive');
+      spinBtn.classList.add('opacity-85', 'cursor-not-allowed', 'scale-95');
+
+      const fullRotations = 6 + Math.floor(Math.random() * 3);
+      const randomOffset = Math.random() * 2 * Math.PI;
+      const totalRotation = fullRotations * 2 * Math.PI + randomOffset;
+      const duration = 5200;
+      const startTime = performance.now();
+      const initialAngle = currentAngle;
+      let lastSegment = -1;
+
+      function frame(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        
+        // Easing out quintic ultra suave
+        const easeOut = 1 - Math.pow(1 - t, 4);
+        currentAngle = initialAngle + totalRotation * easeOut;
+
+        const normalized = (3 * Math.PI / 2 - (currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        const segment = Math.floor(normalized / arcSize);
+
+        if (segment !== lastSegment) {
+          playTick();
+          lastSegment = segment;
+        }
+
+        drawWheel();
+
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          isSpinning = false;
+          statusBadge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span><span class="text-amber-300 font-bold">¡Premio desbloqueado!</span>`;
+          showWinnerModal(segment);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    function showWinnerModal(index) {
+      currentWinner = prizes[index];
+      playWinSound();
+
+      // Confeti de fiesta
+      confetti({
+        particleCount: 110,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+      setTimeout(() => {
+        confetti({
+          particleCount: 65,
+          angle: 60,
+          spread: 65,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 65,
+          angle: 120,
+          spread: 65,
+          origin: { x: 1 }
+        });
+      }, 300);
+
+      prizeEmoji.textContent = currentWinner.emoji;
+      prizeName.textContent = currentWinner.text;
+      prizeDesc.textContent = currentWinner.desc;
+
+      if (currentWinner.isCustom) {
+        customWishContainer.classList.remove('hidden');
+        customWishInput.value = "";
+      } else {
+        customWishContainer.classList.add('hidden');
+      }
+
+      updateWhatsAppUrl();
+
+      prizeModal.classList.remove('opacity-0', 'pointer-events-none');
+      modalBox.classList.remove('scale-90');
+      modalBox.classList.add('scale-100');
+    }
+
+    closeModalBtn.addEventListener('click', () => {
+      prizeModal.classList.add('opacity-0', 'pointer-events-none');
+      modalBox.classList.remove('scale-100');
+      modalBox.classList.add('scale-90');
+      spinBtn.disabled = false;
+      spinBtn.classList.add('glow-interactive');
+      spinBtn.classList.remove('opacity-85', 'cursor-not-allowed', 'scale-95');
+    });
+
+    spinBtn.addEventListener('click', spin);
+  </script>
+</body>
+</html>
