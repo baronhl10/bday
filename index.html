@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cumpleaños Paula ✨ Edición Especial</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(244, 114, 182, 0.2);
+    }
+    .wheel-shadow {
+      filter: drop-shadow(0 20px 40px rgba(236, 72, 153, 0.25));
+    }
+    .gold-glow {
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+    }
+    /* Estilos del puntero */
+    .indicator-arrow {
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 30px solid #F59E0B;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
+    }
+  </style>
+</head>
+<body class="bg-[#090D16] text-slate-100 min-h-screen flex flex-col items-center justify-between p-4 relative overflow-x-hidden selection:bg-pink-500 selection:text-white">
+
+  <!-- Luces decorativas de fondo -->
+  <div class="fixed top-[-10%] left-[-10%] w-[350px] h-[350px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[350px] h-[350px] bg-pink-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <!-- Header elegante -->
+  <header class="text-center mt-2 mb-4 z-10 max-w-sm">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-300 text-xs font-semibold tracking-widest uppercase mb-3 backdrop-blur-md">
+      <span>✨ 24 de Octubre</span>
+      <span class="w-1 h-1 rounded-full bg-pink-400"></span>
+      <span>Birthday Pass</span>
+    </div>
+    
+    <h1 class="font-serif-title text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-pink-200 via-rose-100 to-amber-200 bg-clip-text text-transparent">
+      ¡Feliz Cumple, Pau!
+    </h1>
+    
+    <p class="text-slate-400 text-xs sm:text-sm mt-2 font-normal leading-relaxed">
+      Gira la ruleta y reclama tu regalo oficial. ¡Solo tienes un tiro de la suerte! 🎁
+    </p>
+  </header>
+
+  <!-- Contenedor interactivo principal -->
+  <main class="relative flex flex-col items-center justify-center my-auto z-10 w-full max-w-sm">
+    
+    <!-- Puntero superior moderno -->
+    <div class="absolute -top-4 z-30 flex flex-col items-center">
+      <div class="indicator-arrow animate-bounce"></div>
+      <div class="w-2.5 h-2.5 rounded-full bg-amber-200 -mt-1 shadow-sm"></div>
+    </div>
+
+    <!-- Aro exterior decorativo -->
+    <div class="relative p-2.5 rounded-full glass-card wheel-shadow border border-slate-800">
+      <canvas id="wheelCanvas" width="340" height="340" class="rounded-full"></canvas>
+
+      <!-- Botón central estilo Joya -->
+      <button id="spinBtn" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-20 h-20 rounded-full bg-gradient-to-tr from-rose-500 via-pink-600 to-amber-400 text-white font-extrabold text-sm tracking-wider shadow-2xl border-4 border-[#090D16] flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer">
+        <span class="drop-shadow-md">GIRAR</span>
+      </button>
+    </div>
+
+    <!-- Indicador de estado -->
+    <div id="statusBadge" class="mt-5 px-4 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400 text-xs flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span>1 intento disponible</span>
+    </div>
+  </main>
+
+  <!-- Footer discreto -->
+  <footer class="mt-4 mb-2 text-center text-slate-600 text-[11px] z-10">
+    Hecho con código & buena vibra para tu día ✨
+  </footer>
+
+  <!-- Modal con resultado ganador -->
+  <div id="prizeModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="modalBox" class="glass-card rounded-3xl p-6 sm:p-8 text-center max-w-sm w-full shadow-2xl border border-pink-500/30 transform scale-90 transition-transform duration-300">
+      
+      <!-- Icono animado -->
+      <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-pink-500/20 to-purple-500/20 border border-pink-500/30 flex items-center justify-center text-4xl shadow-inner animate-pulse" id="prizeEmoji">
+        🍰
+      </div>
+
+      <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">¡Premio desbloqueado!</span>
+      
+      <h3 class="font-serif-title text-2xl sm:text-3xl font-bold text-white mt-1 mb-2" id="prizeName">
+        Postre Deli
+      </h3>
+      
+      <p class="text-slate-300 text-xs sm:text-sm mb-6 leading-relaxed">
+        Válido para canjear en la semana de tu cumple. Tócale abajo para enviarme el resultado directo:
+      </p>
+
+      <!-- Botón WhatsApp -->
+      <a id="claimBtn" href="#" target="_blank" class="w-full py-4 px-6 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold rounded-2xl flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-500/25 active:scale-95 transition-all text-sm tracking-wide">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+        <span>Reclamar Premio a Erick</span>
+      </a>
+
+      <button id="closeModalBtn" class="mt-4 text-xs text-slate-400 hover:text-white transition-colors underline decoration-slate-600">
+        Ver ruleta de nuevo
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // CONFIGURACIÓN TÉCNICA
+    const NUMERO_WHATSAPP = "573112358236"; // Tu WhatsApp directo con código Colombia
+
+    const canvas = document.getElementById('wheelCanvas');
+    const ctx = canvas.getContext('2d');
+    const spinBtn = document.getElementById('spinBtn');
+    const prizeModal = document.getElementById('prizeModal');
+    const modalBox = document.getElementById('modalBox');
+    const prizeEmoji = document.getElementById('prizeEmoji');
+    const prizeName = document.getElementById('prizeName');
+    const claimBtn = document.getElementById('claimBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const statusBadge = document.getElementById('statusBadge');
+
+    // Lista de premios calibrados y equilibrados (elegantes y amigables)
+    const prizes = [
+      { text: "Postre Deli", emoji: "🍰", color: "#E11D48", textColor: "#FFFFFF" },
+      { text: "Un Buen Café", emoji: "☕", color: "#7C3AED", textColor: "#FFFFFF" },
+      { text: "Almuerzo Rico", emoji: "🍕", color: "#2563EB", textColor: "#FFFFFF" },
+      { text: "Helado Doble", emoji: "🍦", color: "#059669", textColor: "#FFFFFF" },
+      { text: "Chocolates", emoji: "🍫", color: "#D97706", textColor: "#FFFFFF" },
+      { text: "Comodín Libre", emoji: "🎟️", color: "#4F46E5", textColor: "#FFFFFF" }
+    ];
+
+    const numSegments = prizes.length;
+    const arcSize = (2 * Math.PI) / numSegments;
+    let currentAngle = 0;
+    let isSpinning = false;
+    let hasSpun = false;
+
+    // Web Audio API para ticks y fanfarria limpia sin archivos externos
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) audioCtx = new AudioContext();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playTick() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(420, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.035);
+      } catch(e) {}
+    }
+
+    function playWinSound() {
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        // Acorde triunfal alegre
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.1, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.45);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.45);
+        });
+      } catch(e) {}
+    }
+
+    function drawWheel() {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = canvas.width / 2 - 10;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < numSegments; i++) {
+        const angle = currentAngle + i * arcSize;
+        
+        // Gajo
+        ctx.beginPath();
+        ctx.fillStyle = prizes[i].color;
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, angle, angle + arcSize);
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+
+        // Borde fino entre secciones
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = "#090D16";
+        ctx.stroke();
+
+        // Texto estilizado y Emoji
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(angle + arcSize / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = prizes[i].textColor;
+        ctx.font = "bold 13px 'Plus Jakarta Sans', sans-serif";
+        ctx.shadowColor = "rgba(0,0,0,0.6)";
+        ctx.shadowBlur = 5;
+        ctx.fillText(`${prizes[i].emoji} ${prizes[i].text}`, radius - 22, 5);
+        ctx.restore();
+      }
+
+      // Aro perimetral metálico
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+      ctx.stroke();
+    }
+
+    drawWheel();
+
+    function spin() {
+      if (isSpinning) return;
+      initAudio();
+      
+      isSpinning = true;
+      spinBtn.disabled = true;
+      spinBtn.classList.add('opacity-80', 'cursor-not-allowed');
+
+      // Vueltas aleatorias dinámicas (entre 5 y 8 vueltas completas)
+      const fullRotations = 5 + Math.floor(Math.random() * 3);
+      const randomStopOffset = Math.random() * 2 * Math.PI;
+      const totalRotation = fullRotations * 2 * Math.PI + randomStopOffset;
+      const duration = 4800; // 4.8 segundos de suspenso
+      const startTime = performance.now();
+      const initialAngle = currentAngle;
+      let lastSegmentIndex = -1;
+
+      function frame(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        
+        // Easing out cubic suave
+        const easeOut = 1 - Math.pow(1 - t, 3.2);
+        currentAngle = initialAngle + totalRotation * easeOut;
+
+        // Calcular qué gajo apunta a la flecha superior (270 grados / 3pi/2)
+        const normalized = (3 * Math.PI / 2 - (currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        const currentSegment = Math.floor(normalized / arcSize);
+
+        if (currentSegment !== lastSegmentIndex) {
+          playTick();
+          lastSegmentIndex = currentSegment;
+        }
+
+        drawWheel();
+
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          isSpinning = false;
+          hasSpun = true;
+          statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>¡Premio canjeable!</span>`;
+          showWinnerModal(currentSegment);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    function showWinnerModal(index) {
+      const winner = prizes[index];
+      playWinSound();
+
+      // Ráfaga doble de confeti festivo
+      confetti({
+        particleCount: 90,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+      }, 250);
+
+      prizeEmoji.textContent = winner.emoji;
+      prizeName.textContent = winner.text;
+
+      // Mensaje de WhatsApp estructurado y automático hacia tu número
+      const mensajeTexto = `¡Hola Erick! 🎂 Giré la ruleta de cumple y me salió: ${winner.emoji} *${winner.text}* ✨`;
+      claimBtn.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensajeTexto)}`;
+
+      // Animación de entrada modal
+      prizeModal.classList.remove('opacity-0', 'pointer-events-none');
+      modalBox.classList.remove('scale-90');
+      modalBox.classList.add('scale-100');
+    }
+
+    closeModalBtn.addEventListener('click', () => {
+      prizeModal.classList.add('opacity-0', 'pointer-events-none');
+      modalBox.classList.remove('scale-100');
+      modalBox.classList.add('scale-90');
+      spinBtn.disabled = false;
+      spinBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+    });
+
+    spinBtn.addEventListener('click', spin);
+  </script>
+</body>
+</html>
