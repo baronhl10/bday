@@ -8,57 +8,69 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
   
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: radial-gradient(circle at 50% 20%, #1a102f 0%, #08070d 65%, #030206 100%);
+      background: radial-gradient(circle at 50% 18%, #1f0b2e 0%, #0d0718 50%, #05020a 100%);
     }
     .font-luxury {
       font-family: 'Cinzel', serif;
     }
+    .font-quote {
+      font-family: 'Cormorant Garamond', serif;
+    }
     .gold-gradient-text {
-      background: linear-gradient(135deg, #FFE5A3 0%, #F59E0B 50%, #B45309 100%);
+      background: linear-gradient(135deg, #FFF1CE 0%, #F6C065 45%, #DF8A1E 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .neon-glow {
-      box-shadow: 0 0 50px -10px rgba(244, 63, 94, 0.35), 0 0 30px -5px rgba(168, 85, 247, 0.3);
-    }
     .glass-panel {
-      background: rgba(18, 16, 28, 0.72);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      background: rgba(22, 13, 36, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(244, 114, 182, 0.22);
+      box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(168, 85, 247, 0.28);
     }
+    /* Puntero Superior Geométrico y Alineado */
     .indicator-arrow {
       width: 0;
       height: 0;
-      border-left: 22px solid transparent;
-      border-right: 22px solid transparent;
-      border-top: 38px solid #F59E0B;
-      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.8));
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 36px solid #F59E0B;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.85));
     }
-    @keyframes pulse-gold {
-      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.6)); }
-      50% { transform: scale(1.04); filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.9)); }
+    /* Centrado Absoluto Perfecto sin desfases de translate */
+    .center-perfect {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
-    .animate-spin-btn {
-      animation: pulse-gold 2.5s infinite ease-in-out;
+    @keyframes pulse-soft {
+      0%, 100% {
+        box-shadow: 0 0 25px rgba(245, 158, 11, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(244, 63, 94, 0.75), inset 0 2px 8px rgba(255, 255, 255, 0.7);
+      }
+    }
+    .glow-interactive {
+      animation: pulse-soft 2.8s infinite ease-in-out;
     }
   </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 relative overflow-x-hidden selection:bg-rose-500 selection:text-white">
 
-  <!-- Luces decorativas ambientales -->
-  <div class="fixed top-[-15%] left-[-15%] w-[450px] h-[450px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none"></div>
-  <div class="fixed bottom-[-15%] right-[-15%] w-[450px] h-[450px] bg-rose-600/15 rounded-full blur-[140px] pointer-events-none"></div>
+  <!-- Luces decorativas ambientales profundas -->
+  <div class="fixed top-[-15%] left-[-15%] w-[480px] h-[480px] bg-purple-600/18 rounded-full blur-[150px] pointer-events-none"></div>
+  <div class="fixed bottom-[-15%] right-[-15%] w-[480px] h-[480px] bg-rose-600/18 rounded-full blur-[150px] pointer-events-none"></div>
 
   <!-- Encabezado con Mensajito de Cumple Chévere -->
   <header class="text-center mt-2 mb-3 z-10 max-w-md w-full">
-    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-purple-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold tracking-widest uppercase mb-2.5 backdrop-blur-md shadow-lg">
+    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-purple-500/15 border border-amber-500/35 text-amber-300 text-xs font-bold tracking-widest uppercase mb-2.5 backdrop-blur-md shadow-lg">
       <span class="text-rose-400">✨</span>
       <span>Birthday Pass • 24 de Octubre</span>
       <span class="text-rose-400">✨</span>
@@ -73,25 +85,25 @@
     </p>
   </header>
 
-  <!-- Contenedor Principal de la Ruleta (HD & Grande) -->
+  <!-- Contenedor Principal de la Ruleta (Centrado Milimétrico) -->
   <main class="relative flex flex-col items-center justify-center my-auto z-10 w-full max-w-[420px]">
     
     <!-- Puntero Superior HD -->
-    <div class="absolute -top-5 z-30 flex flex-col items-center">
+    <div class="absolute -top-5 z-30 flex flex-col items-center pointer-events-none">
       <div class="indicator-arrow"></div>
       <div class="w-3.5 h-3.5 rounded-full bg-amber-100 -mt-1.5 shadow-md border border-amber-500"></div>
     </div>
 
     <!-- Aro Exterior de Lujo -->
-    <div class="relative p-3.5 rounded-full glass-panel neon-glow border border-amber-500/20">
+    <div class="relative p-3 rounded-full glass-panel border border-amber-500/30 flex items-center justify-center">
       
-      <!-- Canvas de la Ruleta (Retina Display HiDPI) -->
-      <canvas id="wheelCanvas" width="760" height="760" class="w-[340px] h-[340px] sm:w-[380px] sm:h-[380px] rounded-full"></canvas>
+      <!-- Canvas de la Ruleta (HiDPI 4K) -->
+      <canvas id="wheelCanvas" width="760" height="760" class="w-[340px] h-[340px] sm:w-[380px] sm:h-[380px] rounded-full block"></canvas>
 
-      <!-- Botón Central -->
-      <button id="spinBtn" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-amber-600 via-rose-600 to-amber-300 text-slate-950 font-black text-base sm:text-lg tracking-wider border-4 border-[#08070d] flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all shadow-2xl animate-spin-btn">
-        <span class="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-luxury tracking-widest font-black text-sm sm:text-base">GIRAR</span>
-        <span class="text-[9px] uppercase tracking-wider text-amber-200/90 font-bold -mt-0.5">TOCA AQUÍ</span>
+      <!-- Botón Central con Centrado de Precisión Absoluta -->
+      <button id="spinBtn" class="center-perfect z-20 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-amber-600 via-rose-600 to-amber-300 text-slate-950 font-black border-4 border-[#0d0718] flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform duration-200 glow-interactive select-none">
+        <span class="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] font-luxury tracking-widest font-black text-sm sm:text-base leading-none">GIRAR</span>
+        <span class="text-[9px] uppercase tracking-wider text-amber-200/95 font-bold mt-1 leading-none">TOCA AQUÍ</span>
       </button>
     </div>
 
@@ -102,14 +114,17 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="mt-4 mb-2 text-center text-slate-500 text-[11px] tracking-wider uppercase z-10 font-semibold">
-    Curated with code & buena vibra for Paula's Bday
+  <!-- Footer con Frase Motivacional Estilo Femenino / Fluidez -->
+  <footer class="mt-5 mb-2 text-center z-10 max-w-sm px-4">
+    <p class="font-quote text-base sm:text-lg text-rose-200/90 italic tracking-wide leading-relaxed drop-shadow">
+      “Que la vida te siga sonriendo bonito, que tus sueños vuelen alto y que nunca te falten motivos para celebrar.” ✨
+    </p>
+    <div class="w-12 h-[1px] bg-gradient-to-r from-transparent via-rose-400/50 to-transparent mx-auto mt-2"></div>
   </footer>
 
   <!-- Modal con resultado ganador VIP -->
   <div id="prizeModal" class="fixed inset-0 bg-black/85 backdrop-blur-xl z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-400">
-    <div id="modalBox" class="glass-panel rounded-3xl p-6 sm:p-7 text-center max-w-sm w-full shadow-2xl border border-amber-500/30 transform scale-90 transition-all duration-400">
+    <div id="modalBox" class="glass-panel rounded-3xl p-6 sm:p-7 text-center max-w-sm w-full shadow-2xl border border-amber-500/35 transform scale-90 transition-all duration-400">
       
       <!-- Icono en círculo neón -->
       <div class="w-20 h-20 mx-auto mb-3 rounded-3xl bg-gradient-to-tr from-amber-500/20 via-rose-500/20 to-purple-500/20 border border-amber-500/40 flex items-center justify-center text-4xl shadow-2xl animate-bounce" id="prizeEmoji">
@@ -175,13 +190,13 @@
     const customWishContainer = document.getElementById('customWishContainer');
     const customWishInput = document.getElementById('customWishInput');
 
-    // TUS 6 PREMIOS PERSONALIZADOS
+    // PALETA EDITORIAL DE ALTA GAMA (Ciruela, Magenta Profundo, Zafiro, Esmeralda, Ámbar & Amatista)
     const prizes = [
       { 
         text: "Comida Italiana & Vino", 
         emoji: "🍝", 
-        color: "#E11D48", 
-        subColor: "#BE123C",
+        color: "#C026D3", 
+        subColor: "#701A75",
         desc: "Pasta deli y copa de vino para celebrar tu cumple por todo lo alto.",
         isCustom: false
       },
@@ -189,15 +204,15 @@
         text: "Helado & Café", 
         emoji: "🍦", 
         color: "#8B5CF6", 
-        subColor: "#6D28D9",
+        subColor: "#4C1D95",
         desc: "Tarde parchada con tu café predilecto y helado doble.",
         isCustom: false
       },
       { 
         text: "Parque del Café", 
         emoji: "🎢", 
-        color: "#2563EB", 
-        subColor: "#1D4ED8",
+        color: "#0284C7", 
+        subColor: "#0369A1",
         desc: "Día completo de atracciones, montañas rusas y mucha diversión.",
         isCustom: false
       },
@@ -205,7 +220,7 @@
         text: "Brunch & Postre", 
         emoji: "🥞", 
         color: "#059669", 
-        subColor: "#047857",
+        subColor: "#064E3B",
         desc: "Brunch delicioso en un spot top con postre especial de cumple.",
         isCustom: false
       },
@@ -213,15 +228,15 @@
         text: "Torta & Hershey's C&C", 
         emoji: "🍫", 
         color: "#D97706", 
-        subColor: "#B45309",
+        subColor: "#78350F",
         desc: "Torta de cumple + barra grande de Hershey's Cookies & Cream.",
         isCustom: false
       },
       { 
         text: "Deseo Libre VIP", 
         emoji: "🎟️", 
-        color: "#4F46E5", 
-        subColor: "#4338CA",
+        color: "#F43F5E", 
+        subColor: "#881337",
         desc: "¡Tienes el control total! Elige cualquier plan o antojo que se te ocurra.",
         isCustom: true
       }
@@ -254,7 +269,7 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(480, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(500, audioCtx.currentTime);
         gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
         osc.connect(gain);
@@ -294,8 +309,8 @@
       for (let i = 0; i < numSegments; i++) {
         const angle = currentAngle + i * arcSize;
         
-        // Gradiente radial
-        const grad = ctx.createRadialGradient(centerX, centerY, 40, centerX, centerY, radius);
+        // Gradiente radial sofisticado
+        const grad = ctx.createRadialGradient(centerX, centerY, 35, centerX, centerY, radius);
         grad.addColorStop(0, prizes[i].color);
         grad.addColorStop(1, prizes[i].subColor);
 
@@ -306,9 +321,9 @@
         ctx.lineTo(centerX, centerY);
         ctx.fill();
 
-        // Línea divisoria
+        // Línea divisoria nítida
         ctx.lineWidth = 2.5;
-        ctx.strokeStyle = "#08070d";
+        ctx.strokeStyle = "#0d0718";
         ctx.stroke();
 
         // Texto e ícono
@@ -318,20 +333,20 @@
         ctx.textAlign = "right";
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "bold 13px 'Plus Jakarta Sans', sans-serif";
-        ctx.shadowColor = "rgba(0,0,0,0.8)";
+        ctx.shadowColor = "rgba(0,0,0,0.85)";
         ctx.shadowBlur = 6;
         ctx.fillText(`${prizes[i].emoji}  ${prizes[i].text}`, radius - 20, 5);
         ctx.restore();
       }
 
-      // Anillo dorado exterior
+      // Anillo perimetral dorado
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.lineWidth = 6;
-      ctx.strokeStyle = "rgba(245, 158, 11, 0.4)";
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "rgba(245, 158, 11, 0.45)";
       ctx.stroke();
 
-      // Borde cristal fino
+      // Borde cristal interior
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius - 3, 0, 2 * Math.PI);
       ctx.lineWidth = 1.5;
@@ -367,7 +382,7 @@
       
       isSpinning = true;
       spinBtn.disabled = true;
-      spinBtn.classList.remove('animate-spin-btn');
+      spinBtn.classList.remove('glow-interactive');
       spinBtn.classList.add('opacity-85', 'cursor-not-allowed', 'scale-95');
 
       const fullRotations = 6 + Math.floor(Math.random() * 3);
@@ -414,19 +429,19 @@
 
       // Confeti de fiesta
       confetti({
-        particleCount: 100,
+        particleCount: 110,
         spread: 90,
         origin: { y: 0.6 }
       });
       setTimeout(() => {
         confetti({
-          particleCount: 60,
+          particleCount: 65,
           angle: 60,
           spread: 65,
           origin: { x: 0 }
         });
         confetti({
-          particleCount: 60,
+          particleCount: 65,
           angle: 120,
           spread: 65,
           origin: { x: 1 }
@@ -437,7 +452,6 @@
       prizeName.textContent = currentWinner.text;
       prizeDesc.textContent = currentWinner.desc;
 
-      // Si es Deseo VIP, mostrar cajita para escribir lo que ella quiera
       if (currentWinner.isCustom) {
         customWishContainer.classList.remove('hidden');
         customWishInput.value = "";
@@ -457,7 +471,7 @@
       modalBox.classList.remove('scale-100');
       modalBox.classList.add('scale-90');
       spinBtn.disabled = false;
-      spinBtn.classList.add('animate-spin-btn');
+      spinBtn.classList.add('glow-interactive');
       spinBtn.classList.remove('opacity-85', 'cursor-not-allowed', 'scale-95');
     });
 
